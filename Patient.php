@@ -2,21 +2,39 @@
 require('Person.php');
 
 class Patient extends Person {
-  const DISEASE_TYPES = ['H1N1','Malaria','Ebola','Common Cold'];
-
+  private $diseaseTypes = ['H1N1','Malaria','Ebola','Common Cold'];
   private $hasBeenChecked = false;
   private $hasDisease = false;
+  private $hasDiseaseType = null;
 
   public function testForDisease () {
     $this->hasBeenChecked = true;
+    $testedPositive = random_int(0,1);
+    if($testedPositive == 0){
+      $this->hasDisease = false;
+    } else {
+      $this->hasDisease = true;
+      echo count($this->diseaseTypes);
+      $this->hasDiseaseType = $this->diseaseTypes[
+        random_int(0, count($this->diseaseTypes)-1)
+      ];
+    }
   }
 
   public function printPatientReport () {
     print $this->getIdentity().PHP_EOL;
     print "- - - - - - - - - - - - -\n";
-    $this->hasBeenChecked
-    ? print "The patient has been checked\n"
-    : print "The patient has not been checked\n";
+    if ($this->hasBeenChecked == true) {
+      print "The patient has been tested\n";
+      if ($this->hasDisease == true) {
+        print "The patient has tested positive\n";
+        print "The Patient has contracted ".$this->hasDiseaseType.".\n";
+      } else {
+        print "The patient has tested negative\n"; 
+      }
+    } else {
+      print "The patient has not been tested\n";
+    }
     print "- - - - - - - - - - - - -\n";
   }
 
